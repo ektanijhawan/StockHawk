@@ -34,10 +34,11 @@ public class StockIntentService extends IntentService {
     // scheduling a task.
     stockTaskService.onRunTask(new TaskParams(intent.getStringExtra("tag"), args));
 if(Utils.flag==true)
-  sendMessage();
+{sendMessage();
+Utils.flag=false;}
   }
 
-  private void sendMessage() {
+  public void sendMessage() {
     Log.d("sender", "Broadcasting message");
     Intent intent = new Intent("custom-event-name");
     // You can also include some extra data.
