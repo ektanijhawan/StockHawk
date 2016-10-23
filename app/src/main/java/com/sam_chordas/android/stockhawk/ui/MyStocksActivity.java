@@ -10,6 +10,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.annotation.IntDef;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
@@ -39,6 +40,8 @@ import com.google.android.gms.gcm.Task;
 import com.melnykov.fab.FloatingActionButton;
 import com.sam_chordas.android.stockhawk.touch_helper.SimpleItemTouchHelperCallback;
 
+import java.lang.annotation.Retention;
+
 public class MyStocksActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
   /**
@@ -55,7 +58,20 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
   private QuoteCursorAdapter mCursorAdapter;
   private Context mContext;
   private Cursor mCursor;
+  /*
+  @Retention(SOURCE)
+  @IntDef({NAVIGATION_MODE_STANDARD, NAVIGATION_MODE_LIST, NAVIGATION_MODE_TABS})
+  public @interface NavigationMode {}
+  public static final int NAVIGATION_MODE_STANDARD = 0;
+  public static final int NAVIGATION_MODE_LIST = 1;
+  public static final int NAVIGATION_MODE_TABS = 2;
+  ...
+  public abstract void setNavigationMode(@NavigationMode int mode);
+  @NavigationMode
+  public abstract int getNavigationMode();
+  */
   boolean isConnected;
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -93,8 +109,11 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     recyclerView.addOnItemTouchListener(new RecyclerViewItemClickListener(this,
             new RecyclerViewItemClickListener.OnItemClickListener() {
               @Override public void onItemClick(View v, int position) {
-                //TODO:
-                // do something on item click
+                Cursor c = mCursorAdapter.getCursor();
+                c.moveToPosition(position);
+                Intent detailIntent = new Intent(MyStocksActivity.this,StockDetailActivity.class);
+                detailIntent.putExtra("symbol", c.getString(c.getColumnIndex(QuoteColumns.SYMBOL)));
+                startActivity(detailIntent);
               }
             }));
     recyclerView.setAdapter(mCursorAdapter);
