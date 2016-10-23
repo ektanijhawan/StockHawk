@@ -7,23 +7,51 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.sam_chordas.android.stockhawk.ui.StockDetailActivity">
-
+    android:orientation="vertical"
+    tools:context="com.sam_chordas.android.stockhawk.ui.StockDetailActivity"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+<RelativeLayout
+android:id="@+id/rv"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
     <TextView
         android:id="@+id/stock_name"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    <Spinner
+        android:id="@+id/spinTime"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+       android:layout_toRightOf="@id/stock_name"/>
+</RelativeLayout>
     <TextView
         android:id="@+id/stock_symbol"
-
+   android:layout_below="@+id/rv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <TextView
         android:id="@+id/stock_bidPrice"
-
+android:layout_below="@id/stock_symbol"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
+    </RelativeLayout>
+    <org.eazegraph.lib.charts.ValueLineChart
+        android:id="@+id/linechartz"
+        android:layout_marginTop="30sp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:egUseCubic="true"
+        app:egUseOverlapFill="true"
+        app:egIndicatorLineColor="#DD2C00"
+        app:egIndicatorTextColor="#FFFFFF"
+        app:egLegendHeight="40dp"
+        android:visibility="gone"/>
 
-    <include layout="@layout/activity_line_graph"/>
+
+
+
 </LinearLayout>
