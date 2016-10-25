@@ -132,24 +132,19 @@ public class WidgetService   extends RemoteViewsService {
 
         @Override
         public int getViewTypeCount() {
-            //we have only one type of view to display so returning 1.
+
             return 1;
         }
 
         @Override
         public long getItemId(int position) {
-            //Return the data from the ID column of the table.
+
             return this.cursor.getInt(0);
         }
 
         @Override
         public boolean hasStableIds() {
-            /**
-             * As the table contains a column called ID,
-             * whose value we are returning at getItemId(),
-             * and also is a primary column,
-             * every Id is unique and hence stable.
-             */
+
             return true;
         }
     }
