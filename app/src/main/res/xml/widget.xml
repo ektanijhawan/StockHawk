@@ -3,6 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:minWidth="146dp"
     android:updatePeriodMillis="0"
-    android:minHeight="146dp"
-    android:initialLayout="@layout/activity_my_stocks">
+    android:minHeight="400dp"
+    android:initialLayout="@layout/activity_my_stocks"
+    android:minResizeWidth="180dp"
+    android:resizeMode="vertical|horizontal"
+    android:widgetCategory="home_screen"
+    >
 </appwidget-provider>
