@@ -15,34 +15,28 @@ import com.sam_chordas.android.stockhawk.data.QuoteProvider;
 /**
  * Created by Ekta on 25-10-2016.
  */
-public class WidgetService   extends RemoteViewsService {
-
+public class StackWidgetService extends RemoteViewsService {
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        return new StockRVFactory(this.getApplicationContext(), intent);
+        return new StackRemoteViewsFactory(this.getApplicationContext(), intent);
     }
 
 
     /**
      * Equivalent to a CursorAdapter/ArrayAdapter with ListView.
      */
-    public class StockRVFactory implements RemoteViewsFactory {
+    class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
-        private final String TAG = StockRVFactory.class.getSimpleName();
+        private final String TAG = StackRemoteViewsFactory.class.getSimpleName();
         private Context context;
         private Cursor cursor;
         private int appWidgetId;
 
-        public StockRVFactory(Context context, Intent intent) {
+        public StackRemoteViewsFactory(Context context, Intent intent) {
             this.context = context;
             this.appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
         }
-
-
-
-
-
 
 
         @Override
@@ -50,11 +44,11 @@ public class WidgetService   extends RemoteViewsService {
 
             cursor = getContentResolver().query(
                     QuoteProvider.Quotes.CONTENT_URI,
-                    new String[]{QuoteColumns._ID, //0
-                            QuoteColumns.SYMBOL, //1
-                            QuoteColumns.BIDPRICE, //2
-                            QuoteColumns.CHANGE, //3
-                            QuoteColumns.ISUP}, //4
+                    new String[]{QuoteColumns._ID,
+                            QuoteColumns.SYMBOL,
+                            QuoteColumns.BIDPRICE,
+                            QuoteColumns.CHANGE,
+                            QuoteColumns.ISUP},
                     QuoteColumns.ISCURRENT + " = ?",
                     new String[]{"1"},
                     null
@@ -62,7 +56,6 @@ public class WidgetService   extends RemoteViewsService {
         }
 
         /**
-         *
          * Called when notifyDataSetChanged() is called.
          * Hence we can update the widget with new data!
          */
@@ -70,11 +63,11 @@ public class WidgetService   extends RemoteViewsService {
         public void onDataSetChanged() {
             cursor = getContentResolver().query(
                     QuoteProvider.Quotes.CONTENT_URI,
-                    new String[]{QuoteColumns._ID, //0
-                            QuoteColumns.SYMBOL, //1
-                            QuoteColumns.BIDPRICE, //2
-                            QuoteColumns.CHANGE, //3
-                            QuoteColumns.ISUP}, //4
+                    new String[]{QuoteColumns._ID,
+                            QuoteColumns.SYMBOL,
+                            QuoteColumns.BIDPRICE,
+                            QuoteColumns.CHANGE,
+                            QuoteColumns.ISUP},
                     QuoteColumns.ISCURRENT + " = ?",
                     new String[]{"1"},
                     null
@@ -148,5 +141,5 @@ public class WidgetService   extends RemoteViewsService {
             return true;
         }
     }
-
 }
+
