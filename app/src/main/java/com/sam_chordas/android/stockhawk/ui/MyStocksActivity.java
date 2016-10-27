@@ -1,5 +1,6 @@
 package com.sam_chordas.android.stockhawk.ui;
 
+import android.annotation.TargetApi;
 import android.app.LoaderManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,6 +11,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.support.annotation.IntDef;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
@@ -77,6 +79,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     mContext = this;
+    forceRTLIfSupported();
     ConnectivityManager cm =
         (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -201,6 +204,13 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
             new IntentFilter("custom-event-name"));
   }
 
+  @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+  private void forceRTLIfSupported()
+  {
+    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1){
+      getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+    }
+  }
 
   private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
     @Override
