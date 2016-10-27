@@ -22,7 +22,7 @@ public class StackWidgetProvider extends AppWidgetProvider {
         public void onReceive(Context context, Intent intent) {
                 AppWidgetManager mgr = AppWidgetManager.getInstance(context);
                 if(intent.getAction().equals(ACTION)){
-                        String symbol = intent.getStringExtra(EXTRA_ITEM);
+                        String symbol = intent.getStringExtra("symbol");
                         Intent detail_intent = new Intent(context, StockDetailActivity.class);
                         detail_intent.putExtra("symbol", symbol);
                         detail_intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -40,6 +40,7 @@ public class StackWidgetProvider extends AppWidgetProvider {
                         Intent intent = new Intent(context, StackWidgetService.class);
                         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetIds[i]);
                         intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
+
                         RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
                         rv.setRemoteAdapter(appWidgetIds[i], R.id.lv_stock_widget_layout, intent);
                         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
@@ -51,6 +52,7 @@ public class StackWidgetProvider extends AppWidgetProvider {
                         toastIntent.setAction(StackWidgetProvider.ACTION);
                         toastIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetIds[i]);
                         intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
+
                         PendingIntent toastPendingIntent = PendingIntent.getBroadcast(context, 0, toastIntent,
                                 PendingIntent.FLAG_UPDATE_CURRENT);
                         rv.setPendingIntentTemplate(R.id.lv_stock_widget_layout, toastPendingIntent);

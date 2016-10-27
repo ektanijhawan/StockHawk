@@ -3,7 +3,7 @@
     android:minWidth="40dp"
     android:minHeight="40dp"
     android:updatePeriodMillis="86400000"
-    android:configure="com.sam_chordas.android.stockhawk.ui.MyStocksActivity"
+
     android:previewImage="@drawable/ic_drawer"
     android:initialLayout="@layout/widget_layout"
     android:resizeMode="horizontal|vertical"
