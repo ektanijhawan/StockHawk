@@ -205,6 +205,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     }
     LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
             new IntentFilter("custom-event-name"));
+
   }
 
   @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -234,6 +235,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
   public void onResume() {
     super.onResume();
     getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
+
   }
 
   public void networkToast(){
@@ -290,15 +292,13 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
   public void onLoadFinished(Loader<Cursor> loader, Cursor data){
     mCursorAdapter.swapCursor(data);
     mCursor = data;
+    updateStocksWidget();
   }
   private void updateStocksWidget(){
     AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(mContext.getApplicationContext());
     int[] ids = appWidgetManager.getAppWidgetIds(new ComponentName(this, StackWidgetProvider.class));
     if(ids.length > 0) {
-      /**
-       * notifyAppWidgetViewDataChanged() method will call the onDataSetChanged method of the
-       * #{@link com.sam_chordas.android.stockhawk.widget.StockWidgetService.StockRVFactory} class.
-       */
+
       appWidgetManager.notifyAppWidgetViewDataChanged(ids, R.id.lv_stock_widget_layout);
     }
   }
