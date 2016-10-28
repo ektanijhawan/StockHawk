@@ -1,26 +1,18 @@
 package com.sam_chordas.android.stockhawk.ui;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.app.Activity;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.android.volley.RequestQueue;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.github.mikephil.charting.charts.LineChart;
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
 import com.sam_chordas.android.stockhawk.R;
-import com.sam_chordas.android.stockhawk.rest.VolleySingleton;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -30,52 +22,62 @@ import org.eazegraph.lib.charts.ValueLineChart;
 import org.eazegraph.lib.models.ValueLinePoint;
 import org.eazegraph.lib.models.ValueLineSeries;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-public class StockDetailActivity extends Activity  implements  AdapterView.OnItemSelectedListener{
+
+public class StockDetailActivity extends Activity implements AdapterView.OnItemSelectedListener {
 
     private OkHttpClient client = new OkHttpClient();
     String companyName;
-    String previous_close_price;
-    String comapany_symbol;
-    private String sortOrder;
-    private ArrayList<String> labels;//=new ArrayList<>();
-    private ArrayList<Float> values;//= new ArrayList<>();
-    private int item = 0;
+    private ArrayList<String> labels;
+    private ArrayList<Float> values;
     @InjectView(R.id.stock_name)
     TextView company_name;
     @InjectView(R.id.stock_symbol)
     TextView stock_symbol;
     @InjectView(R.id.linechartz)
     ValueLineChart valueLineChart;
-
+    Boolean isConnected;
     String symbol;
+    Context mContext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = this;
         setContentView(R.layout.activity_stock_detail);
         ButterKnife.inject(this);
+        isConnected();
         symbol = getIntent().getExtras().getString("symbol");
         downloadStockDetails();
 
     }
 
-String url;
+    public void isConnected() {
+        ConnectivityManager cm =
+                (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+        if (!isConnected)
+            Toast.makeText(mContext, getString(R.string.network_toast), Toast.LENGTH_SHORT).show();
+
+    }
+
+    String url;
+
     private void downloadStockDetails() {
         OkHttpClient client = new OkHttpClient();
-        if (item == 0) {
+
             url = "http://chartapi.finance.yahoo.com/instrument/1.0/" + symbol + "/chartdata;type=quote;range=1m/json";
-        }else if (item == 1) {
-           url=  "http://chartapi.finance.yahoo.com/instrument/1.0/" + symbol + "/chartdata;type=quote;range=1y/json";
-        }
+
         Request request = new Request.Builder()
                 .url(url)
                 .build();
@@ -105,7 +107,7 @@ String url;
                                     format(srcFormat.parse(seriesItem.getString("Date")));
                             labels.add(date);
                             values.add(Float.parseFloat(seriesItem.getString("close")));
-                            Log.v("close",seriesItem.getString("close"));
+                            Log.v("close", seriesItem.getString("close"));
                         }
 
                         onDownloadCompleted();
@@ -125,11 +127,12 @@ String url;
             }
         });
     }
+
     private void onDownloadCompleted() {
         StockDetailActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-               company_name.setText(companyName);
+                company_name.setText(companyName);
                 stock_symbol.setText(symbol);
                 ValueLineSeries series = new ValueLineSeries();
                 series.setColor(0xFF56B7F1);
@@ -142,9 +145,10 @@ String url;
 
             }
 
-            });
+        });
 
     }
+
     private void onDownloadFailed() {
         StockDetailActivity.this.runOnUiThread(new Runnable() {
             @Override
@@ -158,9 +162,7 @@ String url;
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-
-                item = position;
-               downloadStockDetails();
+        downloadStockDetails();
 
 
     }
