@@ -2,7 +2,9 @@ package com.sam_chordas.android.stockhawk.ui;
 
 import android.annotation.TargetApi;
 import android.app.LoaderManager;
+import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -41,6 +43,7 @@ import com.google.android.gms.gcm.PeriodicTask;
 import com.google.android.gms.gcm.Task;
 import com.melnykov.fab.FloatingActionButton;
 import com.sam_chordas.android.stockhawk.touch_helper.SimpleItemTouchHelperCallback;
+import com.sam_chordas.android.stockhawk.widget.StackWidgetProvider;
 
 import java.lang.annotation.Retention;
 
@@ -287,6 +290,17 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
   public void onLoadFinished(Loader<Cursor> loader, Cursor data){
     mCursorAdapter.swapCursor(data);
     mCursor = data;
+  }
+  private void updateStocksWidget(){
+    AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(mContext.getApplicationContext());
+    int[] ids = appWidgetManager.getAppWidgetIds(new ComponentName(this, StackWidgetProvider.class));
+    if(ids.length > 0) {
+      /**
+       * notifyAppWidgetViewDataChanged() method will call the onDataSetChanged method of the
+       * #{@link com.sam_chordas.android.stockhawk.widget.StockWidgetService.StockRVFactory} class.
+       */
+      appWidgetManager.notifyAppWidgetViewDataChanged(ids, R.id.lv_stock_widget_layout);
+    }
   }
 
   @Override
