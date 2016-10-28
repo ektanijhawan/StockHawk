@@ -3,15 +3,19 @@ package com.sam_chordas.android.stockhawk.service;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.OperationApplicationException;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.os.RemoteException;
+import android.preference.PreferenceManager;
+import android.support.annotation.IntDef;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.GcmTaskService;
 import com.google.android.gms.gcm.TaskParams;
+import com.sam_chordas.android.stockhawk.R;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
 import com.sam_chordas.android.stockhawk.rest.Utils;
@@ -20,6 +24,8 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.net.URLEncoder;
 
 /**
@@ -49,6 +55,18 @@ public class StockTaskService extends GcmTaskService{
     return response.body().string();
   }
 
+  @Retention(RetentionPolicy.SOURCE)
+  @IntDef({STATUS_OK, STATUS_SERVER_ERROR, STATUS_NO_NETWORK, STATUS_ERROR_JSON,
+          STATUS_UNKNOWN, STATUS_SERVER_DOWN})
+  public @interface StockStatuses {
+  }
+
+  public static final int STATUS_OK = 0;
+  public static final int STATUS_ERROR_JSON = 1;
+  public static final int STATUS_SERVER_ERROR = 2;
+  public static final int STATUS_SERVER_DOWN = 3;
+  public static final int STATUS_NO_NETWORK = 4;
+  public static final int STATUS_UNKNOWN = 5;
   @Override
   public int onRunTask(TaskParams params){
     Cursor initQueryCursor;
@@ -63,6 +81,7 @@ public class StockTaskService extends GcmTaskService{
         + "in (", "UTF-8"));
     } catch (UnsupportedEncodingException e) {
       e.printStackTrace();
+      setStockStatus(mContext, STATUS_UNKNOWN);
     }
     if (params.getTag().equals("init") || params.getTag().equals("periodic")){
       isUpdate = true;
@@ -76,6 +95,7 @@ public class StockTaskService extends GcmTaskService{
               URLEncoder.encode("\"YHOO\",\"AAPL\",\"GOOG\",\"MSFT\")", "UTF-8"));
         } catch (UnsupportedEncodingException e) {
           e.printStackTrace();
+          setStockStatus(mContext, STATUS_UNKNOWN);
         }
       } else if (initQueryCursor != null){
         DatabaseUtils.dumpCursor(initQueryCursor);
@@ -90,6 +110,7 @@ public class StockTaskService extends GcmTaskService{
           urlStringBuilder.append(URLEncoder.encode(mStoredSymbols.toString(), "UTF-8"));
         } catch (UnsupportedEncodingException e) {
           e.printStackTrace();
+          setStockStatus(mContext, STATUS_UNKNOWN);
         }
       }
     } else if (params.getTag().equals("add")){
@@ -100,6 +121,7 @@ public class StockTaskService extends GcmTaskService{
         urlStringBuilder.append(URLEncoder.encode("\""+stockInput+"\")", "UTF-8"));
       } catch (UnsupportedEncodingException e){
         e.printStackTrace();
+        setStockStatus(mContext, STATUS_UNKNOWN);
       }
     }
     // finalize the URL for the API query.
@@ -128,6 +150,7 @@ public class StockTaskService extends GcmTaskService{
                   Utils.quoteJsonToContentVals(getResponse));
 
         } catch (RemoteException | OperationApplicationException e) {
+          setStockStatus(mContext, STATUS_ERROR_JSON);
           Log.e(LOG_TAG, "Error applying batch insert", e);
         }
       }
@@ -135,6 +158,7 @@ public class StockTaskService extends GcmTaskService{
           Toast.makeText(this,"Wrong input",Toast.LENGTH_SHORT).show();
         }
       } catch (IOException e){
+        setStockStatus(mContext, STATUS_SERVER_DOWN);
         e.printStackTrace();
       }
     }
@@ -143,4 +167,10 @@ public class StockTaskService extends GcmTaskService{
     return result;
   }
 
+  static public void setStockStatus(Context context, @StockStatuses int stockStatus) {
+    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+    SharedPreferences.Editor editor = sp.edit();
+    editor.putInt(context.getString(R.string.stockStatus), stockStatus);
+    editor.apply();
+  }
 }

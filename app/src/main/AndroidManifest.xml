@@ -53,7 +53,7 @@
                 android:value="com.sam_chordas.android.stockhawk.ui.MyStocksActivity" />
         </activity>
         <receiver
-            android:name=".widget.StackWidgetProvider"
+            android:name=".widget.StockWidgetProvider"
             android:label="Stock Hawk">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -63,7 +63,7 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget" />
         </receiver>
-        <service android:name=".widget.StackWidgetService"
+        <service android:name=".widget.StockWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS"/>
 
     </application>

@@ -1,19 +1,25 @@
 <resources>
-    <string name="app_name">Stock Hawk</string>
-    <string name="action_example">Example action</string>
+    <string name="app_name" translatable="false">Stock Hawk</string>
+    <string name="action_example" translatable="false">Example action</string>
     <string name="action_settings" translatable="true">Settings</string>
-    <string name="action_change_units">Change Units</string>
-    <string name="symbol_search">Symbol Search</string>
+    <string name="action_change_units" translatable="false">Change Units</string>
+    <string name="symbol_search" translatable="true">Symbol Search</string>
     <string name="content_test" translatable="true">Search for a Stock Symbol</string>
-    <string name="input_hint" translatable="true">FB</string>
-    <string name="input_prefill"></string>
+    <string name="input_hint" translatable="false">FB</string>
     <string name="network_toast" translatable="true">Uh-oh! This app requires an internet connection</string>
     <string name="no_internet" translatable="true">There is no internet connection.!</string>
-    <string name="title_activity_stock_detail">StockDetailActivity</string>
+    <string name="title_activity_stock_detail" translatable="false">StockDetailActivity</string>
     <string name="stock_list_content_description" translatable="true">TThe list of stocks is shown.</string>
     <string name="fab_content_description" translatable="true">The button to add new stocks</string>
     <string name="graph_content_description" translatable="true">The graph showing stock prices of a month</string>
     <string name="stockname" translatable="true">Stock Name :</string>
     <string name="stocksymbol" translatable="true">Stock Symbol :</string>
     <string name="bidprice" translatable="true">Bid Price :</string>
+    <string name="stockStatus" translatable="false">StockStatus</string>
+    <string name="string_status_no_network" translatable="true">NO INTERNET CONNECTION !</string>
+    <string name="string_error_json" translatable="true">App Internal Error occurred !</string>
+    <string name="string_server_down" translatable="true">Yahoo Server is not responding !</string>
+    <string name="string_error_server" translatable="true">Parsing error !</string>
+    <string name="string_status_unknown" translatable="true">Some problem occured !</string>
+    <string name="input_prefill"></string>
 </resources>

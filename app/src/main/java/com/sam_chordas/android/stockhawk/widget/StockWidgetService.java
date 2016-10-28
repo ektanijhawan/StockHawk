@@ -15,7 +15,7 @@ import com.sam_chordas.android.stockhawk.data.QuoteProvider;
 /**
  * Created by Ekta on 25-10-2016.
  */
-public class StackWidgetService extends RemoteViewsService {
+public class StockWidgetService extends RemoteViewsService {
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
         return new StackRemoteViewsFactory(this.getApplicationContext(), intent);

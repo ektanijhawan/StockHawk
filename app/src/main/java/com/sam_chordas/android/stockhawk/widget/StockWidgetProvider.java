@@ -14,7 +14,7 @@ import com.sam_chordas.android.stockhawk.ui.StockDetailActivity;
 /**
  * Created by Ekta on 24-10-2016.
  */
-public class StackWidgetProvider extends AppWidgetProvider {
+public class StockWidgetProvider extends AppWidgetProvider {
         public static final String ACTION = "com.sam_chordas.android.stockhawk.widget.StockWidgetProvider.ACTION";
         public static final String EXTRA_ITEM = "com.sam_chordas.android.stockhawk.widget.StockWidgetProvider.EXTRA_ITEM";
 
@@ -37,7 +37,7 @@ public class StackWidgetProvider extends AppWidgetProvider {
 
                 for (int i = 0; i< appWidgetIds.length ; i++){
 
-                        Intent intent = new Intent(context, StackWidgetService.class);
+                        Intent intent = new Intent(context, StockWidgetService.class);
                         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetIds[i]);
                         intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
 
@@ -46,10 +46,10 @@ public class StackWidgetProvider extends AppWidgetProvider {
                         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
 
                         //Update the widget
-                        views.setRemoteAdapter(R.id.lv_stock_widget_layout, new Intent(context, StackWidgetService.class));
+                        views.setRemoteAdapter(R.id.lv_stock_widget_layout, new Intent(context, StockWidgetService.class));
 
-                        Intent toastIntent = new Intent(context, StackWidgetProvider.class);
-                        toastIntent.setAction(StackWidgetProvider.ACTION);
+                        Intent toastIntent = new Intent(context, StockWidgetProvider.class);
+                        toastIntent.setAction(StockWidgetProvider.ACTION);
                         toastIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetIds[i]);
                         intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
 
