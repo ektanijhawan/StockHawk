@@ -210,7 +210,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                                                     new String[]{str.toString()}, null);
                                             if (c.getCount() != 0) {
                                                 Toast toast =
-                                                        Toast.makeText(MyStocksActivity.this, "This stock is already saved!",
+                                                        Toast.makeText(MyStocksActivity.this, getString(R.string.already_saved),
                                                                 Toast.LENGTH_LONG);
                                                 toast.setGravity(Gravity.CENTER, Gravity.CENTER, 0);
                                                 toast.show();
@@ -225,7 +225,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                                         }
                                     } else {
                                         Toast toast =
-                                                Toast.makeText(MyStocksActivity.this, "Invalid input",
+                                                Toast.makeText(MyStocksActivity.this, getString(R.string.inavlid_input),
                                                         Toast.LENGTH_LONG);
                                         toast.setGravity(Gravity.CENTER, Gravity.CENTER, 0);
                                         toast.show();
@@ -243,7 +243,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
             }
         });
         if (Utils.flag == true)
-            Toast.makeText(this, "Inavlid input!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, (R.string.inavlid_input), Toast.LENGTH_SHORT).show();
     }
 
     public void restoreActionBar() {

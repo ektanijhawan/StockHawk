@@ -17,4 +17,8 @@
     <string name="bidprice" translatable="true">Bid Price :</string>
     <string name="stockStatus" translatable="false">StockStatus</string>
     <string name="input_prefill"></string>
+    <string name="already_saved" translatable="true">This stock is already saved!</string>
+    <string name="inavlid_input" translatable="true">Invalid input.!</string>
+    <string name="graph_content" translatable="true">Following is graph showing stock prices of a month :</string>
+
 </resources>

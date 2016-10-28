@@ -38,6 +38,12 @@
             android:layout_marginLeft="3sp"/>
     </RelativeLayout>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/graph_content"
+        android:textSize="15sp"
+        android:layout_marginTop="10sp"/>
     <org.eazegraph.lib.charts.ValueLineChart
         android:id="@+id/linechartz"
         android:layout_width="match_parent"
