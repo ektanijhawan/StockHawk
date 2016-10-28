@@ -19,7 +19,6 @@ android:id="@+id/rv"
     android:layout_height="wrap_content">
     <TextView
         android:id="@+id/stock_name"
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <Spinner
@@ -49,7 +48,8 @@ android:layout_below="@id/stock_symbol"
         app:egIndicatorLineColor="#DD2C00"
         app:egIndicatorTextColor="#FFFFFF"
         app:egLegendHeight="40dp"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:contentDescription="@string/graph_content_description"/>
 
 
 

@@ -12,4 +12,7 @@
     <string name="network_toast">Uh-oh! This app requires an internet connection</string>
     <string name="no_internet">There is no internet connection.!</string>
     <string name="title_activity_stock_detail">StockDetailActivity</string>
+    <string name="stock_list_content_description">TThe list of stocks is shown.</string>
+    <string name="fab_content_description">The button to add new stocks</string>
+    <string name="graph_content_description">The graph showing stock prices of a month</string>
 </resources>
