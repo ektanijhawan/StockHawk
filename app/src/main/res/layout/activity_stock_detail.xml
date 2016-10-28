@@ -1,57 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:orientation="vertical"
-    tools:context="com.sam_chordas.android.stockhawk.ui.StockDetailActivity"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    tools:context="com.sam_chordas.android.stockhawk.ui.StockDetailActivity">
+
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-<RelativeLayout
-android:id="@+id/rv"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-    <TextView
-        android:id="@+id/stock_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <Spinner
-        android:id="@+id/spinTime"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-       android:layout_toRightOf="@id/stock_name"/>
-</RelativeLayout>
-    <TextView
-        android:id="@+id/stock_symbol"
-   android:layout_below="@+id/rv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:id="@+id/stock_bidPrice"
-android:layout_below="@id/stock_symbol"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="40sp">
+
+        <TextView
+            android:id="@+id/stock_name"
+            style="@style/DataStyle"
+            android:textSize="25sp"
+            />
+
     </RelativeLayout>
+
+    <RelativeLayout style="@style/DataStyle">
+
+        <TextView
+            android:id="@+id/symbol_of_stock"
+            style="@style/DataStyle"
+            android:text="@string/stocksymbol"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/stock_symbol"
+            style="@style/DataStyle"
+            android:layout_toRightOf="@id/symbol_of_stock"
+            android:layout_marginLeft="3sp"/>
+    </RelativeLayout>
+
     <org.eazegraph.lib.charts.ValueLineChart
         android:id="@+id/linechartz"
-        android:layout_marginTop="30sp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:egUseCubic="true"
-        app:egUseOverlapFill="true"
+        android:layout_marginTop="30sp"
+        android:contentDescription="@string/graph_content_description"
+        android:visibility="gone"
         app:egIndicatorLineColor="#DD2C00"
         app:egIndicatorTextColor="#FFFFFF"
         app:egLegendHeight="40dp"
-        android:visibility="gone"
-        android:contentDescription="@string/graph_content_description"/>
-
-
+        app:egUseCubic="true"
+        app:egUseOverlapFill="true" />
 
 
 </LinearLayout>

@@ -54,31 +54,16 @@ public class StockDetailActivity extends Activity  implements  AdapterView.OnIte
     TextView company_name;
     @InjectView(R.id.stock_symbol)
     TextView stock_symbol;
-    @InjectView(R.id.stock_bidPrice)
-    TextView bid_price;
     @InjectView(R.id.linechartz)
     ValueLineChart valueLineChart;
-    @InjectView(R.id.spinTime)
-    Spinner spinTime;
+
     String symbol;
-    public VolleySingleton volleySingleton;
-    public RequestQueue requestQueue;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stock_detail);
-//        getActionBar().setDisplayHomeAsUpEnabled(true);
         ButterKnife.inject(this);
         symbol = getIntent().getExtras().getString("symbol");
-
-     /*   spinTime.setOnItemSelectedListener(this);
-        List<String> time = new ArrayList<>();
-        time.add("1 month");
-        time.add("1 year");
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(StockDetailActivity.this, R.layout.spinner, time);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinTime.setAdapter(dataAdapter);
-        */
         downloadStockDetails();
 
     }
@@ -146,9 +131,6 @@ String url;
             public void run() {
                company_name.setText(companyName);
                 stock_symbol.setText(symbol);
-               bid_price.setText(previous_close_price);
-           //     setTitle(companyName);
-
                 ValueLineSeries series = new ValueLineSeries();
                 series.setColor(0xFF56B7F1);
                 for (int i = 0; i < labels.size(); i++) {
@@ -175,13 +157,12 @@ String url;
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        Spinner spinner = (Spinner) parent;
-        switch(spinner.getId()){
-            case R.id.spinTime:
+
+
                 item = position;
                downloadStockDetails();
-                break;
-        }
+
+
     }
 
     @Override
