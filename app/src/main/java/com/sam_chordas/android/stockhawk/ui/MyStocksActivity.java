@@ -24,6 +24,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -66,8 +67,6 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     RecyclerView recyclerView;
     boolean isConnected;
 
-    TextView emptyView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,8 +79,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
         isConnected = activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
         setContentView(R.layout.activity_my_stocks);
-        emptyView = (TextView) findViewById(R.id.emptyView);
-        emptyView.setVisibility(View.INVISIBLE);
+
         // The intent service is for executing immediate pulls from the Yahoo API
         // GCMTaskService can only schedule tasks, they cannot execute immediately
         mServiceIntent = new Intent(this, StockIntentService.class);
@@ -92,8 +90,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                 startService(mServiceIntent);
 
             } else {
-                networkToast(getString(R.string.network_toast));
-
+                networkToast();
 
             }
         }
@@ -115,7 +112,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                     }
                 }));
         recyclerView.setAdapter(mCursorAdapter);
-        networkBehavior();
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.attachToRecyclerView(recyclerView);
@@ -166,7 +163,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                             .show();
 
                 } else {
-                    networkToast(getString(R.string.network_toast));
+                    networkToast();
                 }
 
             }
@@ -200,6 +197,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
                 new IntentFilter("custom-event-name"));
 
+        getLoaderManager().restartLoader(CURSOR_LOADER_ID, null, this);
     }
 
 
@@ -225,47 +223,10 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
 
     }
 
-    public void networkToast(String message) {
-        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
+    public void networkToast() {
+        Toast.makeText(mContext, getString(R.string.network_toast), Toast.LENGTH_SHORT).show();
     }
 
-    public void networkBehavior() {
-
-        if (mCursorAdapter.getItemCount() <= 0) {
-            //The data is not available
-
-
-            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(mContext);
-            @StockTaskService.StockStatuses int stockStatus = sp.getInt(getString(R.string.stockStatus), -1);
-
-            String message = "";
-            switch (stockStatus) {
-                case StockTaskService.STATUS_NO_NETWORK:
-                    networkToast(getString(R.string.network_toast));
-                    break;
-
-                case StockTaskService.STATUS_ERROR_JSON:
-                    networkToast(getString(R.string.string_error_json));
-                    break;
-
-                case StockTaskService.STATUS_SERVER_DOWN:
-                    networkToast(getString(R.string.string_server_down));
-                    break;
-
-                case StockTaskService.STATUS_SERVER_ERROR:
-                    networkToast(getString(R.string.string_error_server));
-                    break;
-
-                case StockTaskService.STATUS_UNKNOWN:
-                    message += getString(R.string.string_status_unknown);
-                    break;
-                default:
-                    break;
-
-            }
-
-        }
-    }
 
 
     public void restoreActionBar() {
@@ -319,7 +280,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
         mCursorAdapter.swapCursor(data);
         mCursor = data;
         updateStocksWidget();
-        networkBehavior();
+
     }
 
     private void updateStocksWidget() {
@@ -334,7 +295,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mCursorAdapter.swapCursor(null);
-        networkBehavior();
+
     }
 
 }

@@ -16,10 +16,5 @@
     <string name="stocksymbol" translatable="true">Stock Symbol :</string>
     <string name="bidprice" translatable="true">Bid Price :</string>
     <string name="stockStatus" translatable="false">StockStatus</string>
-    <string name="string_status_no_network" translatable="true">NO INTERNET CONNECTION !</string>
-    <string name="string_error_json" translatable="true">App Internal Error occurred !</string>
-    <string name="string_server_down" translatable="true">Yahoo Server is not responding !</string>
-    <string name="string_error_server" translatable="true">Parsing error !</string>
-    <string name="string_status_unknown" translatable="true">Some problem occured !</string>
     <string name="input_prefill"></string>
 </resources>
